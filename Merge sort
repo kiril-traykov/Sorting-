@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void Merge(vector <int> &vec, int l, int m, int r) {
+
+	int i = 0;
+	int j = 0;
+	int k = l;
+
+	int leftsize =  m - l + 1;
+	int rightsize = r - m;
+
+	vector <int> left;
+	vector <int> right;
+
+	
+	for (int n = 0; n < leftsize; n++) {
+		left.push_back(vec[l + n]);
+	}
+	for (int n = 0; n < rightsize; n++) {
+		right.push_back(vec[m + 1 + n]);
+	}
+
+	while (i < leftsize || j < rightsize) {
+
+		if (i == leftsize) {
+			while (j < rightsize)
+			{
+				vec[k] = right[j];
+				j++;
+				k++;
+			}
+			break;
+		}
+
+		if (j == rightsize) {
+			while (i < leftsize)
+			{
+				vec[k] = left[i];
+				i++;
+				k++;
+			}
+			break;
+		}
+
+		if (left[i] <= right[j]) {
+			vec[k] = left[i];
+			i++; k++;
+		}
+		else {
+			vec[k] = right[j];
+			j++; k++;
+		}
+	}
+}
+
+void MergeSort(vector <int> &vec, int left, int right) {
+	if (left < right) {
+
+		int mid = left + (right - left) / 2;
+
+		MergeSort(vec, left, mid);
+		MergeSort(vec, mid + 1, right);
+
+		Merge(vec, left, mid, right);
+	}
+}
+
+void printarray(vector <int> v) {
+	for (auto x : v) {
+		cout << x << '\t';
+	}
+	cout << endl;
+}
+
+int main() {
+
+	vector <int> vec = {rand(),rand(), rand(), rand(), rand(), rand(), rand(), rand()};
+
+	MergeSort(vec, 0, vec.size()- 1);
+
+	printarray(vec);
+	
+}
